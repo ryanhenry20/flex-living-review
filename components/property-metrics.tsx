@@ -3,7 +3,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
-export function PropertyMetrics({ reviews }: { reviews: any[] }) {
+interface ReviewData {
+  listingId: string;
+  listingName: string;
+  overallRating?: number;
+  [key: string]: unknown;
+}
+
+interface PropertyData {
+  name: string;
+  ratings: number[];
+  count: number;
+}
+
+export function PropertyMetrics({ reviews }: { reviews: ReviewData[] }) {
   // Calculate metrics
   const properties = reviews.reduce((acc, review) => {
     if (!acc[review.listingId]) {
@@ -18,9 +31,9 @@ export function PropertyMetrics({ reviews }: { reviews: any[] }) {
     }
     acc[review.listingId].count++;
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, PropertyData>);
 
-  const metrics = Object.entries(properties).map(([id, data]: [string, any]) => ({
+  const metrics = Object.entries(properties).map(([id, data]: [string, PropertyData]) => ({
     id,
     name: data.name,
     averageRating: data.ratings.length

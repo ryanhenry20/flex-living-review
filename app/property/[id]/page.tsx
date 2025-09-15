@@ -15,9 +15,20 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
     queryFn: () => fetch('/api/reviews/hostaway').then(res => res.json())
   });
 
+interface ReviewData {
+    id: string;
+    listingId: number;
+    guestName: string;
+    submittedAt: string;
+    overallRating?: number;
+    publicReview: string;
+    reviewCategory?: Array<{category: string; rating: number}>;
+    [key: string]: unknown;
+  }
+
   // In production, check localStorage or API for approval status
   const approvedReviews = data?.reviews?.filter(
-    (r: any) => r.listingId === parseInt(resolvedParams.id)
+    (r: ReviewData) => r.listingId === parseInt(resolvedParams.id)
   ) || [];
 
   const propertyNames: { [key: string]: string } = {
@@ -120,7 +131,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
               </Card>
             ) : (
               <div className="space-y-4">
-                {approvedReviews.map((review: any) => (
+                {approvedReviews.map((review: ReviewData) => (
                   <Card key={review.id} className="bg-white border border-gray-200">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-3">
@@ -142,7 +153,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
 
                       {review.reviewCategory && (
                         <div className="flex gap-2 flex-wrap">
-                          {review.reviewCategory.map((cat: any, idx: number) => (
+                          {review.reviewCategory.map((cat: {category: string; rating: number}, idx: number) => (
                             <Badge key={idx} variant="secondary" className="bg-gray-200 text-gray-800">
                               {cat.category}: {cat.rating}/10
                             </Badge>

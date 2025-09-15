@@ -13,7 +13,18 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
-export function ReviewsTable({ reviews }: { reviews: any[] }) {
+interface ReviewData {
+  id: number;
+  submittedAt: string;
+  listingName: string;
+  guestName: string;
+  overallRating?: number;
+  channel: string;
+  publicReview: string;
+  [key: string]: unknown;
+}
+
+export function ReviewsTable({ reviews }: { reviews: ReviewData[] }) {
   const [approvals, setApprovals] = useState<Record<number, boolean>>({});
 
   const handleApprovalToggle = (reviewId: number) => {
@@ -49,8 +60,8 @@ export function ReviewsTable({ reviews }: { reviews: any[] }) {
               <TableCell className="text-gray-900">{review.guestName}</TableCell>
               <TableCell>
                 <Badge
-                  variant={review.overallRating >= 8 ? "default" : "secondary"}
-                  className={review.overallRating >= 8 ? "bg-green-600 text-white" : "bg-gray-200 text-gray-800"}
+                  variant={(review.overallRating ?? 0) >= 8 ? "default" : "secondary"}
+                  className={(review.overallRating ?? 0) >= 8 ? "bg-green-600 text-white" : "bg-gray-200 text-gray-800"}
                 >
                   {review.overallRating || 'N/A'}/10
                 </Badge>

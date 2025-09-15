@@ -31,7 +31,13 @@ export default function Dashboard() {
   const filteredReviews = useMemo(() => {
     if (!data?.reviews) return [];
 
-    return data.reviews.filter((review: any) => {
+interface ReviewData {
+      listingId: number;
+      channel: string;
+      [key: string]: unknown;
+    }
+
+    return data.reviews.filter((review: ReviewData) => {
       if (filters.property !== 'all' && review.listingId !== parseInt(filters.property)) {
         return false;
       }

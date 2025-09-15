@@ -27,7 +27,7 @@ export async function GET() {
       reviews: normalizeReviews(mockReviews)
     });
 
-  } catch (error) {
+  } catch {
     // Use mock data on error
     return NextResponse.json({
       source: 'mock',
@@ -36,7 +36,16 @@ export async function GET() {
   }
 }
 
-function normalizeReviews(reviews: any[]) {
+interface Review {
+  id: string | number;
+  channel?: string;
+  rating?: number | null;
+  reviewCategory?: Array<{ rating: number }>;
+  isApprovedForDisplay?: boolean;
+  [key: string]: unknown;
+}
+
+function normalizeReviews(reviews: Review[]) {
   return reviews.map(review => ({
     ...review,
     channel: review.channel || 'airbnb',
@@ -45,10 +54,10 @@ function normalizeReviews(reviews: any[]) {
   }));
 }
 
-function calculateOverallRating(review: any) {
+function calculateOverallRating(review: Review) {
   if (review.rating) return review.rating;
   if (review.reviewCategory?.length) {
-    const sum = review.reviewCategory.reduce((acc: number, cat: any) =>
+    const sum = review.reviewCategory.reduce((acc: number, cat: { rating: number }) =>
       acc + cat.rating, 0
     );
     return Math.round(sum / review.reviewCategory.length);
