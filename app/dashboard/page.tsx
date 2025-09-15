@@ -15,7 +15,7 @@ import {
 import { Home, BarChart3, Building2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function HomePage() {
+export default function Dashboard() {
   const [filters, setFilters] = useState({
     property: 'all',
     rating: 'all',
@@ -43,7 +43,7 @@ export default function HomePage() {
   }, [data?.reviews, filters]);
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-screen text-gray-900">Loading...</div>;
+    return <div className="flex items-center justify-center h-screen text-gray-900 bg-white">Loading...</div>;
   }
 
   return (
@@ -56,15 +56,15 @@ export default function HomePage() {
         </div>
 
         <nav className="space-y-2">
-          <div className="w-full flex items-center px-3 py-2 rounded-md bg-blue-600 text-white">
+          <Link href="/" className="w-full flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
             <Home className="mr-2 h-4 w-4" />
             Dashboard
-          </div>
+          </Link>
 
-          <Link href="/dashboard" className="w-full flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+          <div className="w-full flex items-center px-3 py-2 rounded-md bg-blue-600 text-white">
             <BarChart3 className="mr-2 h-4 w-4" />
             Reviews
-          </Link>
+          </div>
 
           <Link href="/property/101" className="w-full flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
             <Building2 className="mr-2 h-4 w-4" />
@@ -92,8 +92,8 @@ export default function HomePage() {
       <div className="flex-1 overflow-auto">
         <div className="p-6">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900">Reviews Dashboard</h2>
-            <p className="text-gray-600">Monitor and approve guest reviews across all properties</p>
+            <h2 className="text-3xl font-bold text-gray-900">Reviews Management</h2>
+            <p className="text-gray-600">Approve and manage guest reviews across all properties</p>
           </div>
 
           {/* Metrics Cards */}
